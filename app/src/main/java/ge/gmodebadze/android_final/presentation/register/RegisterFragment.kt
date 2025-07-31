@@ -1,4 +1,4 @@
-package ge.gmodebadze.android_final
+package ge.gmodebadze.android_final.presentation.register
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import ge.gmodebadze.android_final.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
@@ -59,14 +60,41 @@ class RegisterFragment : Fragment() {
         }
 
         binding.loginRedirectButton.setOnClickListener {
-            showToast("Back to Sign In Page")
+            findNavController().navigateUp()
         }
     }
 
     private fun observeViewModel() {
-        viewModel.registrationResult.observe(viewLifecycleOwner) { result ->
-            showToast(result)
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            setLoadingState(isLoading)
         }
+
+        viewModel.registrationState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is RegisterViewModel.RegistrationState.Success -> {
+                    showToast("Registration successful!")
+                }
+                is RegisterViewModel.RegistrationState.Error -> {
+                    showToast(state.message)
+                }
+                is RegisterViewModel.RegistrationState.Loading -> {
+                    // Loading state handled by isLoading observer
+                }
+                RegisterViewModel.RegistrationState.Idle -> {
+                    // Initial state, do nothing
+                }
+            }
+        }
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        binding.signUpButton.isEnabled = !isLoading
+        binding.loginRedirectButton.isEnabled = !isLoading
+        binding.nicknameRegisterPage.isEnabled = !isLoading
+        binding.passwordRegisterPage.isEnabled = !isLoading
+        binding.whatIDoRegisterPage.isEnabled = !isLoading
+
+        binding.signUpButton.text = if (isLoading) "Registering..." else "SIGN UP"
     }
 
     private fun showToast(message: String) {

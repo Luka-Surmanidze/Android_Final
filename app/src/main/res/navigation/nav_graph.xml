@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="ge.gmodebadze.android_final.RegisterFragment"
+        android:name="ge.gmodebadze.android_final.presentation.register.RegisterFragment"
         android:label="Register"
         tools:layout="@layout/fragment_register" />
 </navigation>
