@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_big">20sp</dimen>
+    <dimen name="margin_default">10dp</dimen>
+    <dimen name="padding_default">10dp</dimen>
+    <dimen name="login_signup_textbox_width">300dp</dimen>
+</resources>
