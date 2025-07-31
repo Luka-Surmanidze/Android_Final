@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="ge.gmodebadze.android_final" />
+                  <option name="mobileSdkAppId" value="1:1089324801793:android:ce0a694987f839888e0500" />
+                  <option name="projectId" value="zaqwsxcde" />
+                  <option name="projectNumber" value="1089324801793" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
