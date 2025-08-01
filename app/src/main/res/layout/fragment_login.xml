@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/image_login_page"
         android:layout_width="@dimen/login_signup_textbox_width"
         android:layout_height="@dimen/login_signup_textbox_width"
         android:src="@drawable/avatar_image_placeholder"
@@ -15,7 +15,7 @@
         android:padding="@dimen/padding_big"/>
 
     <EditText
-        android:id="@+id/nickname_register_page"
+        android:id="@+id/nickname_login_page"
         android:layout_width="@dimen/login_signup_textbox_width"
         android:layout_height="wrap_content"
         android:hint="@string/enter_your_nickname"
@@ -29,11 +29,10 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        android:layout_marginTop="@dimen/margin_default"/>
+        app:layout_constraintTop_toBottomOf="@+id/image_login_page"/>
 
     <EditText
-        android:id="@+id/password_register_page"
+        android:id="@+id/password_login_page"
         android:layout_width="@dimen/login_signup_textbox_width"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
@@ -47,42 +46,53 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nickname_register_page"
+        app:layout_constraintTop_toBottomOf="@id/nickname_login_page"
         android:layout_marginTop="@dimen/margin_default"/>
 
-    <EditText
-        android:id="@+id/what_i_do_register_page"
-        android:layout_width="@dimen/login_signup_textbox_width"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="@string/what_i_do"
-        android:textSize="@dimen/text_size_big"
-
-        android:background="@drawable/rounded_text_view"
-        android:textColor="@color/text_color"
-        android:paddingVertical="@dimen/padding_small"
-
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_register_page"
-        android:layout_marginTop="@dimen/margin_default"/>
 
     <android.widget.Button
-        android:id="@+id/sign_up_button"
+        android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/padding_default"
-        android:layout_marginTop="@dimen/margin_default"
         android:background="@drawable/rounded_button"
         android:backgroundTint="@null"
+        android:paddingHorizontal="@dimen/padding_default"
+        android:text="@string/sign_in"
+
         android:textColor="@color/white"
+        android:textSize="@dimen/text_size_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_login_page"
+        android:layout_marginTop="@dimen/margin_big"/>
+
+
+    <TextView
+        android:id="@+id/not_registered_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/not_registered"
+        app:layout_constraintBottom_toTopOf="@id/sign_up_redirect_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="@dimen/margin_default"
+        />
+
+    <android.widget.Button
+        android:id="@+id/sign_up_redirect_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button_border"
+        android:paddingHorizontal="@dimen/padding_default"
 
         android:text="@string/sign_up"
         android:textSize="@dimen/text_size_big"
+        android:textColor="@color/light_black"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/what_i_do_register_page" />
-
+        android:layout_marginBottom="@dimen/margin_default"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
