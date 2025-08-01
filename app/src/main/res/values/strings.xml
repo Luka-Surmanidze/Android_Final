@@ -16,4 +16,6 @@
     <string name="error_profession_required">Profession is required</string>
 
 
+
+    <string name="not_registered">Not registered?</string>
 </resources>

@@ -13,4 +13,8 @@
     <color name="error_color">#F44336</color>
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#757575</color>
+    <color name="blue">#5479f1</color>
+    <color name="text_color">#95979a</color>
+    <color name="text_view_color">#f3f6ff</color>
+    <color name="light_black">#383838</color>
 </resources>
