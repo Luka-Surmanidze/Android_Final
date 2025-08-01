@@ -27,11 +27,24 @@ class FirebaseAuthRepository : AuthRepository {
     }
 
     override suspend fun loginUser(email: String, password: String): Result<Unit> {
-        return Result.failure(Exception("Not yet implemented"))
+        return try {
+            auth.signInWithEmailAndPassword(email, password).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override fun getCurrentUser(): User? {
-        return null
+        val firebaseUser = auth.currentUser ?: return null
+
+        return User(
+            uid = firebaseUser.uid,
+            email = firebaseUser.email ?: "",
+            nickname = firebaseUser.email?.substringBefore("@") ?: "",
+            profession = "",
+            createdAt = System.currentTimeMillis()
+        )
     }
 
     override suspend fun logoutUser(): Result<Unit> {
