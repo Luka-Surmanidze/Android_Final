@@ -1,5 +1,6 @@
 package ge.gmodebadze.android_final.presentation.home
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ge.gmodebadze.android_final.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -29,6 +31,7 @@ class HomeFragment : Fragment() {
         setupRecyclerView()
         setupBottomNavigation()
         setupFloatingActionButton()
+        setupScrollBehavior()
     }
 
     private fun setupRecyclerView() {
@@ -36,6 +39,59 @@ class HomeFragment : Fragment() {
         binding.chatRecyclerView.adapter = ChatAdapter(getDummyChats()) { chatName ->
             Toast.makeText(requireContext(), "Clicked on $chatName", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
+    }
+
+    private fun setupScrollBehavior() {
+        var isBottomBarVisible = true
+
+        binding.chatRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            var totalDy = 0
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                totalDy += dy
+
+                val currentHeight = binding.topBar.root.layoutParams.height
+                val newHeight = (currentHeight - dy / 3).coerceIn(dpToPx(100), dpToPx(160))
+
+                val layoutParams = binding.topBar.root.layoutParams
+                layoutParams.height = newHeight
+                binding.topBar.root.layoutParams = layoutParams
+
+                if (dy > 10 && isBottomBarVisible) {
+                    hideBottomBar()
+                    isBottomBarVisible = false
+                } else if (dy < -10 && !isBottomBarVisible) {
+                    showBottomBar()
+                    isBottomBarVisible = true
+                }
+            }
+        })
+    }
+
+    private fun hideBottomBar() {
+        binding.bottomBar.bottomNav.animate()
+            .translationY(binding.bottomBar.bottomNav.height.toFloat())
+            .setDuration(200)
+            .start()
+
+        binding.fabUsers.animate()
+            .translationY(40f)
+            .setDuration(200).start()
+    }
+
+    private fun showBottomBar() {
+        binding.bottomBar.bottomNav.animate()
+            .translationY(0f)
+            .setDuration(200)
+            .start()
+
+        binding.fabUsers.animate()
+            .translationY(0f)
+            .setDuration(200).start()
     }
 
     private fun setupBottomNavigation() {
@@ -47,7 +103,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getDummyChats(): List<String> {
-        return listOf("Alice", "Bob", "Charlie", "Diana", "Eve")
+        return listOf("Alice", "Bob", "Charlie", "Diana", "Eve", "Alice", "Bob", "Charlie", "Diana", "Eve", "Alice", "Bob", "Charlie", "Diana", "Eve", "Alice", "Bob", "Charlie", "Diana", "Eve", "Alice", "Bob", "Charlie", "Diana", "Eve")
     }
 
     override fun onDestroyView() {
