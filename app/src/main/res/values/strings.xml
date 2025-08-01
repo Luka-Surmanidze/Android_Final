@@ -6,5 +6,16 @@
     <string name="sign_up">SIGN UP</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_in">SIGN IN</string>
+
+
+    <string name="hint_nickname">Nickname</string>
+    <string name="hint_profession">Profession</string>
+    <string name="btn_update_profile">Update Profile</string>
+    <string name="btn_sign_out">SIGN OUT</string>
+    <string name="error_nickname_required">Nickname is required</string>
+    <string name="error_profession_required">Profession is required</string>
+
+
+
     <string name="not_registered">Not registered?</string>
 </resources>
