@@ -4,17 +4,32 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/login_signup_textbox_width"
+        android:layout_height="@dimen/login_signup_textbox_width"
+        android:src="@drawable/avatar_image_placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="@dimen/padding_default"/>
+
     <EditText
         android:id="@+id/nickname_register_page"
         android:layout_width="@dimen/login_signup_textbox_width"
         android:layout_height="wrap_content"
-        android:inputType="text"
         android:hint="@string/enter_your_nickname"
-        android:textSize="@dimen/text_size_big"
+        android:inputType="text"
         android:textAlignment="center"
+        android:textSize="@dimen/text_size_big"
+
+        android:background="@drawable/rounded_text_view"
+        android:textColor="@color/text_color"
+        android:paddingVertical="@dimen/padding_small"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
         android:layout_marginTop="@dimen/margin_default"/>
 
     <EditText
@@ -24,6 +39,11 @@
         android:inputType="textPassword"
         android:hint="@string/enter_your_password"
         android:textSize="@dimen/text_size_big"
+
+        android:background="@drawable/rounded_text_view"
+        android:textColor="@color/text_color"
+        android:paddingVertical="@dimen/padding_small"
+
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,40 +57,32 @@
         android:inputType="text"
         android:hint="@string/what_i_do"
         android:textSize="@dimen/text_size_big"
+
+        android:background="@drawable/rounded_text_view"
+        android:textColor="@color/text_color"
+        android:paddingVertical="@dimen/padding_small"
+
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_register_page"
         android:layout_marginTop="@dimen/margin_default"/>
 
-    <Button
+    <android.widget.Button
         android:id="@+id/sign_up_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@null"
+        android:textColor="@color/white"
+
         android:text="@string/sign_up"
+        android:textSize="@dimen/text_size_big"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/what_i_do_register_page"
-        android:layout_marginTop="@dimen/margin_default"/>
-
-    <TextView
-        android:id="@+id/login_redirect_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/already_have_an_account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/login_redirect_button"
-        android:layout_marginBottom="@dimen/margin_default"
-        />
-
-    <Button
-        android:id="@+id/login_redirect_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_in"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/what_i_do_register_page" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
