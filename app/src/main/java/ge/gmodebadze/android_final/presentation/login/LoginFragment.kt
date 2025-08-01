@@ -61,10 +61,7 @@ class LoginFragment : Fragment() {
             when (state) {
                 is LoginViewModel.LoginState.Success -> {
                     showToast("Login successful!")
-                    // TODO LUKA
-                    Log.d("LoginFragment", "Navigating to ProfileFragment")
-                    findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
-
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
                 is LoginViewModel.LoginState.Error -> {
                     showToast(state.message)

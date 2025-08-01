@@ -11,11 +11,11 @@
 
     <dimen name="login_signup_textbox_width">300dp</dimen>
 
-
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large">24dp</dimen>
     <dimen name="margin_extra_large">32dp</dimen>
+
     <dimen name="profile_image_size">120dp</dimen>
     <dimen name="button_height">48dp</dimen>
     <dimen name="text_size_large">18sp</dimen>
@@ -23,5 +23,10 @@
     <dimen name="text_size_small">14sp</dimen>
 
     <dimen name="button_border_radius">10dp</dimen>
-    <dimen name="text_view_border_radius">10dp</dimen>"
+    <dimen name="text_view_border_radius">10dp</dimen>
+
+    <dimen name="top_bar_height">100dp</dimen>
+    <dimen name="bottom_bar_height">100dp</dimen>
+
+    <dimen name="icon_size">40dp</dimen>
 </resources>
