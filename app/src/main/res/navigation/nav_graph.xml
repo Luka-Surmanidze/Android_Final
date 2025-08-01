@@ -5,6 +5,16 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
+        android:id="@+id/profileFragment"
+        android:name="ge.gmodebadze.android_final.presentation.profile.ProfileFragment"
+        android:label="Profile" >
+
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/registerFragment"
         android:name="ge.gmodebadze.android_final.presentation.register.RegisterFragment"
         android:label="Register"
