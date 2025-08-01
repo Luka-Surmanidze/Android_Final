@@ -26,4 +26,7 @@
     <dimen name="text_view_border_radius">10dp</dimen>
 
     <dimen name="top_bar_height">100dp</dimen>
+    <dimen name="bottom_bar_height">100dp</dimen>
+
+    <dimen name="icon_size">40dp</dimen>
 </resources>
