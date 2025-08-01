@@ -1,12 +1,15 @@
 package ge.gmodebadze.android_final.presentation.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -59,6 +62,9 @@ class LoginFragment : Fragment() {
                 is LoginViewModel.LoginState.Success -> {
                     showToast("Login successful!")
                     // TODO LUKA
+                    Log.d("LoginFragment", "Navigating to ProfileFragment")
+                    findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
+
                 }
                 is LoginViewModel.LoginState.Error -> {
                     showToast(state.message)

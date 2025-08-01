@@ -41,7 +41,8 @@ class RegisterViewModel(
             uid = "",
             nickname = nickname,
             profession = profession,
-            email = ""
+            email = "",
+            profileImageUrl = ""
         )
 
         viewModelScope.launch {
