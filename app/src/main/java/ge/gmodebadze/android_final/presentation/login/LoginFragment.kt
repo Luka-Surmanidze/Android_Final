@@ -47,8 +47,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.signUpRedirectButton.setOnClickListener {
-            showToast("Navigate to Register Page")
-            // TODO GIVI
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
     }
 

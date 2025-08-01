@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.databinding.FragmentProfileBinding
@@ -36,7 +37,25 @@ class ProfileFragment : Fragment() {
 
         setupClickListeners()
         observeViewModel()
+        setupBottomNavigation()
         viewModel.loadUserProfile()
+    }
+
+    private fun setupBottomNavigation() {
+        binding.bottomBar.bottomNav.setOnItemSelectedListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.menu_home -> {
+                    findNavController().navigate(R.id.action_profileFragment_to_homeFragment)
+                    true
+                }
+                R.id.menu_profile -> {
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.bottomBar.bottomNav.selectedItemId = R.id.menu_profile
     }
 
     private fun setupClickListeners() {

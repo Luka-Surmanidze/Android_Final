@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
@@ -68,6 +70,7 @@ class RegisterFragment : Fragment() {
             when (state) {
                 is RegisterViewModel.RegistrationState.Success -> {
                     showToast("Registration successful!")
+                    findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                 }
                 is RegisterViewModel.RegistrationState.Error -> {
                     showToast(state.message)
