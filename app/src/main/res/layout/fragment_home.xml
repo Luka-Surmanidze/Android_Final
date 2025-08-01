@@ -24,16 +24,6 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_users"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="@dimen/margin_extra_big"
-        android:src="@drawable/add_24dp"
-        android:backgroundTint="@color/blue"
-        app:tint="@android:color/white" />
-
     <include
         android:id="@+id/bottom_bar"
         layout = "@layout/bottombar"

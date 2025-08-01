@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -78,7 +80,7 @@ class HomeFragment : Fragment() {
             .setDuration(200)
             .start()
 
-        binding.fabUsers.animate()
+        binding.bottomBar.fabUsers.animate()
             .translationY(40f)
             .setDuration(200).start()
     }
@@ -89,13 +91,27 @@ class HomeFragment : Fragment() {
             .setDuration(200)
             .start()
 
-        binding.fabUsers.animate()
+        binding.bottomBar.fabUsers.animate()
             .translationY(0f)
             .setDuration(200).start()
     }
 
     private fun setupBottomNavigation() {
-        // TODO
+        binding.bottomBar.bottomNav.setOnItemSelectedListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.menu_home -> {
+                    true
+                }
+                R.id.menu_profile -> {
+                    findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+                    true
+                }
+                else -> false
+            }
+
+        }
+
+        binding.bottomBar.bottomNav.selectedItemId = R.id.menu_home
     }
 
     private fun setupFloatingActionButton() {
