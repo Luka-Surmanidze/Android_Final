@@ -2,21 +2,29 @@ package ge.gmodebadze.android_final.presentation.home
 
 import android.animation.ValueAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.databinding.FragmentHomeBinding
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: HomeViewModel by viewModels()
+    private lateinit var adapter: ChatAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,15 +39,28 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        observeChats()
         setupBottomNavigation()
         setupFloatingActionButton()
         setupScrollBehavior()
     }
 
     private fun setupRecyclerView() {
+        adapter = ChatAdapter { chatItem ->
+            val bundle = Bundle().apply {
+                putString("chatId", chatItem.chatId)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_chatFragment, bundle)
+        }
         binding.chatRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.chatRecyclerView.adapter = ChatAdapter(getDummyChats()) { chatName ->
-            Toast.makeText(requireContext(), "Clicked on $chatName", Toast.LENGTH_SHORT).show()
+        binding.chatRecyclerView.adapter = adapter
+    }
+
+    private fun observeChats() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.chatItems.collectLatest { chatItems ->
+                adapter.submitList(chatItems)
+            }
         }
     }
 
@@ -119,18 +140,6 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_userSearchFragment)
         }
     }
-
-    private fun getDummyChats(): List<ChatItem> {
-        val now = System.currentTimeMillis()
-        return listOf(
-            ChatItem("Givi Modebadze", "Working on the homework", now - 3 * 60 * 1000),
-            ChatItem("Ana", "Check this out!", now - 2 * 60 * 60 * 1000),
-            ChatItem("Luka", "😂😂😂", now - 25 * 60 * 60 * 1000),
-            ChatItem("Nino", "Done with the task!", now - 10 * 60 * 1000),
-            ChatItem("Saba", "See you soon", now - 4 * 24 * 60 * 60 * 1000),
-        )
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -226,4 +226,8 @@ class ChatRepository {
             database.child("chats").removeEventListener(listener)
         }
     }
+
+    val currentUserId: String?
+        get() = FirebaseAuth.getInstance().currentUser?.uid
+
 }

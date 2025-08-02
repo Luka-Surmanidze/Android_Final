@@ -1,59 +1,71 @@
 package ge.gmodebadze.android_final.presentation.home
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.databinding.ItemConversationBinding
 import java.text.SimpleDateFormat
 import java.util.*
+
+
 class ChatAdapter(
-    private val chatList: List<ChatItem>,
-    private val onClick: (ChatItem) -> Unit
-) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+    private val onChatClick: (ChatItem) -> Unit
+) : ListAdapter<ChatItem, ChatAdapter.ChatViewHolder>(DiffCallback) {
 
-    inner class ChatViewHolder(val binding: ItemConversationBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(chatItem: ChatItem) {
-            binding.textUsername.text = chatItem.userName
-            binding.textLastMessage.text = chatItem.lastMessage
-            binding.textTimestamp.text = formatTimestamp(chatItem.timestamp)
-
-//            binding.imageProfile.setImageResource()
-
-            binding.root.setOnClickListener { onClick(chatItem) }
+    object DiffCallback : DiffUtil.ItemCallback<ChatItem>() {
+        override fun areItemsTheSame(oldItem: ChatItem, newItem: ChatItem): Boolean {
+            return oldItem.chatId == newItem.chatId
         }
 
-        private fun formatTimestamp(time: Long): String {
-            val now = System.currentTimeMillis()
-            val diff = now - time
+        override fun areContentsTheSame(oldItem: ChatItem, newItem: ChatItem): Boolean {
+            return oldItem == newItem
+        }
+    }
 
-            return when {
-                diff < 60 * 60 * 1000 -> "${diff / (60 * 1000)} min ago"
-                diff < 24 * 60 * 60 * 1000 -> "${diff / (60 * 60 * 1000)} hrs ago"
-                else -> {
-                    val sdf = SimpleDateFormat("d MMM", Locale.getDefault())
-                    sdf.format(Date(time))
-                }
+    inner class ChatViewHolder(private val binding: ItemConversationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
+        fun bind(item: ChatItem) {
+            item.userPhotoUrl?.let { url ->
+                Glide.with(binding.imageProfile.context)
+                    .load(url)
+                    .placeholder(R.drawable.avatar_image_placeholder)
+                    .circleCrop()
+                    .into(binding.imageProfile)
+            } ?: run {
+                binding.imageProfile.setImageResource(R.drawable.avatar_image_placeholder)
             }
+
+            binding.textUsername.text = item.userName
+            binding.textLastMessage.text = item.lastMessage
+            binding.textTimestamp.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(item.timestamp))
+
+            binding.root.setOnClickListener { onChatClick(item) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemConversationBinding.inflate(inflater, parent, false)
+        val binding = ItemConversationBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ChatViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        holder.bind(chatList[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = chatList.size
 }
 
 
 data class ChatItem(
+    val chatId: String,
     val userName: String,
     val lastMessage: String,
     val timestamp: Long,
