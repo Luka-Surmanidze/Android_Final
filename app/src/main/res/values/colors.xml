@@ -19,4 +19,6 @@
     <color name="top_bar_color">#d4defd</color>
 
     <color name="transparent">#00000000</color>
+
+    <color name="chat_received_color">#f4f6fe</color>
 </resources>
