@@ -2,19 +2,21 @@ package ge.gmodebadze.android_final.presentation.chat
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.databinding.ItemMessageReceivedBinding
 import ge.gmodebadze.android_final.databinding.ItemMessageSentBinding
+import ge.gmodebadze.android_final.domain.model.Message
+import java.text.SimpleDateFormat
+import java.util.*
 
-sealed class ChatMessage {
-    data class Sent(val text: String, val time: String) : ChatMessage()
-    data class Received(val text: String, val time: String) : ChatMessage()
-}
-
-class ChatAdapter(private val messages: MutableList<ChatMessage>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatAdapter(
+    private val onMakeGroupClick: () -> Unit
+) : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiffCallback()) {
 
     companion object {
         private const val TYPE_SENT = 0
@@ -22,9 +24,11 @@ class ChatAdapter(private val messages: MutableList<ChatMessage>) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (messages[position]) {
-            is ChatMessage.Sent -> TYPE_SENT
-            is ChatMessage.Received -> TYPE_RECEIVED
+        val message = getItem(position)
+        return if (message.senderId == FirebaseAuth.getInstance().currentUser?.uid) {
+            TYPE_SENT
+        } else {
+            TYPE_RECEIVED
         }
     }
 
@@ -47,37 +51,72 @@ class ChatAdapter(private val messages: MutableList<ChatMessage>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (val message = messages[position]) {
-            is ChatMessage.Sent -> (holder as SentMessageViewHolder).bind(message)
-            is ChatMessage.Received -> (holder as ReceivedMessageViewHolder).bind(message)
+        val message = getItem(position)
+        when (holder) {
+            is SentMessageViewHolder -> holder.bind(message)
+            is ReceivedMessageViewHolder -> holder.bind(message)
         }
-    }
-
-    override fun getItemCount(): Int = messages.size
-
-    fun addMessage(message: ChatMessage) {
-        messages.add(message)
-        notifyItemInserted(messages.size - 1)
     }
 
     inner class SentMessageViewHolder(private val binding: ItemMessageSentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: ChatMessage.Sent) {
+        fun bind(message: Message) {
             binding.messageText.text = message.text
-            binding.messageTime.text = message.time
+            binding.messageTime.text = formatTime(message.timestamp)
+
+            if (message.text.equals("Make Group", ignoreCase = true)) {
+                binding.root.setOnClickListener {
+                    onMakeGroupClick()
+                }
+                binding.messageText.setTextColor(
+                    binding.root.context.getColor(R.color.blue)
+                )
+            } else {
+                binding.root.setOnClickListener(null)
+                binding.messageText.setTextColor(
+                    binding.root.context.getColor(R.color.white)
+                )
+            }
         }
     }
 
     inner class ReceivedMessageViewHolder(private val binding: ItemMessageReceivedBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: ChatMessage.Received) {
+        fun bind(message: Message) {
             binding.messageText.text = message.text
-            binding.messageTime.text = message.time
+            binding.messageTime.text = formatTime(message.timestamp)
 
             Glide.with(binding.senderProfileImage.context)
-                .load(R.drawable.avatar_image_placeholder)
+                .load(message.senderProfileImageUrl.ifEmpty { R.drawable.avatar_image_placeholder })
+                .placeholder(R.drawable.avatar_image_placeholder)
+                .error(R.drawable.avatar_image_placeholder)
                 .circleCrop()
                 .into(binding.senderProfileImage)
         }
+    }
+
+    private fun formatTime(timestamp: Long): String {
+        val now = System.currentTimeMillis()
+        val diff = now - timestamp
+
+        return when {
+            diff < 60_000 -> "just now"
+            diff < 3_600_000 -> "${diff / 60_000}m ago"
+            diff < 86_400_000 -> "${diff / 3_600_000}h ago"
+            else -> {
+                val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+                formatter.format(Date(timestamp))
+            }
+        }
+    }
+}
+
+class MessageDiffCallback : DiffUtil.ItemCallback<Message>() {
+    override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
+        return oldItem == newItem
     }
 }

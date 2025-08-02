@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.databinding.FragmentUserSearchBinding
 import ge.gmodebadze.android_final.domain.model.User
 
@@ -134,6 +135,10 @@ class UserSearchFragment : Fragment() {
         // Example navigation (adjust according to your nav graph):
         // val action = UserSearchFragmentDirections.actionUserSearchFragmentToChatFragment(user.uid)
         // findNavController().navigate(action)
+        val bundle = Bundle().apply {
+            putString("participantId", user.uid)
+        }
+        findNavController().navigate(R.id.action_userSearchFragment_to_chatFragment, bundle)
     }
 
     private fun showToast(message: String) {
