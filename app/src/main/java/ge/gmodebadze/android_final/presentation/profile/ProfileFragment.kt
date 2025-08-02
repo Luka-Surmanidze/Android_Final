@@ -46,6 +46,7 @@ class ProfileFragment : Fragment() {
         setupClickListeners()
         observeViewModel()
         setupBottomNavigation()
+        setupFloatingActionButton()
         viewModel.loadUserProfile()
     }
 
@@ -64,6 +65,12 @@ class ProfileFragment : Fragment() {
         }
 
         binding.bottomBar.bottomNav.selectedItemId = R.id.menu_profile
+    }
+
+    private fun setupFloatingActionButton() {
+        binding.bottomBar.fabUsers.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_userSearchFragment)
+        }
     }
 
     private fun setupClickListeners() {
