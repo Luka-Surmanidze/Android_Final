@@ -65,6 +65,14 @@
     <fragment
         android:id="@+id/userSearchFragment"
         android:name="ge.gmodebadze.android_final.presentation.user_search.UserSearchFragment"
-        android:label="Search Users" />
+        android:label="Search Users"
+        tools:layout="@layout/fragment_user_search"
+        />
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="ge.gmodebadze.android_final.presentation.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat" />
 
 </navigation>
