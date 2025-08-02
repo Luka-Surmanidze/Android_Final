@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/chatAppBar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:fitsSystemWindows="true"
         android:background="@color/blue"
         >
@@ -64,7 +64,7 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:scrollbars="vertical"
         android:paddingHorizontal="@dimen/padding_small"
-        android:paddingBottom="100dp"
+        android:layout_marginBottom="250dp"
         tools:listitem="@layout/item_message_sent"
         />
 

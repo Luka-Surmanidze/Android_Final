@@ -1,6 +1,7 @@
 package ge.gmodebadze.android_final.presentation.chat
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.data.repository.ChatRepository
@@ -23,7 +25,6 @@ class ChatFragment : Fragment() {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
 
-    // You'll need to add these parameters to your navigation arguments
     private var chatId: String = ""
     private var participantId: String? = null
 
@@ -67,6 +68,8 @@ class ChatFragment : Fragment() {
         }
     }
 
+
+
     private fun createChatWithParticipant(participantId: String) {
         lifecycleScope.launch {
             val repository = ChatRepository()
@@ -90,7 +93,47 @@ class ChatFragment : Fragment() {
                 stackFromEnd = true
             }
             adapter = chatAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                var totalDy = 0
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    totalDy += dy
+                    if (dy < 0 && totalDy <= -400) {
+                        resizeAppBarByScroll(-dy)
+                    } else if (dy > 0 && totalDy >= -400) {
+                        resizeAppBarByScroll(-dy)
+                    }
+//                    Log.d("total_dy",totalDy.toString())
+                }
+            })
         }
+    }
+
+    private var currentAppBarHeight: Int = 0
+
+    private fun resizeAppBarByScroll(dy: Int) {
+        val layoutParams = binding.chatAppBar.layoutParams
+        if (currentAppBarHeight == 0) {
+            currentAppBarHeight = layoutParams.height
+        }
+
+        val minHeight = dpToPx(80)
+        val maxHeight = dpToPx(120)
+
+        val targetHeight = (currentAppBarHeight - dy / 3).coerceIn(minHeight, maxHeight)
+
+        val smoothingFactor = 0.3f
+        currentAppBarHeight = (currentAppBarHeight + ((targetHeight - currentAppBarHeight) * smoothingFactor)).toInt()
+
+        if (layoutParams.height != currentAppBarHeight) {
+            layoutParams.height = currentAppBarHeight
+            binding.chatAppBar.layoutParams = layoutParams
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 
     private fun setupListeners() {
