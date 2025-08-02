@@ -2,7 +2,9 @@ package ge.gmodebadze.android_final.presentation.profile
 
 import ProfileViewModel
 import android.app.AlertDialog
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import ge.gmodebadze.android_final.R
 import ge.gmodebadze.android_final.databinding.FragmentProfileBinding
 import ge.gmodebadze.android_final.domain.model.User
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.RequestListener
 
 class ProfileFragment : Fragment() {
 
@@ -166,12 +171,36 @@ class ProfileFragment : Fragment() {
 
     private fun loadProfileImage(imageUrl: String) {
         Glide.with(requireContext())
-            .load(imageUrl.ifEmpty { null })
+            .load(imageUrl)
             .placeholder(R.drawable.avatar_image_placeholder)
             .error(R.drawable.avatar_image_placeholder)
             .circleCrop()
-            .transition(DrawableTransitionOptions.withCrossFade())
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.e("Glide", "Load failed", e)
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d("Glide", "Image loaded successfully")
+                    return false
+                }
+            })
             .into(binding.ivProfileImage)
+
+
+        Log.d("DEBUG", "Loading image from: $imageUrl")
     }
 
     private fun setLoadingState(isLoading: Boolean) {
