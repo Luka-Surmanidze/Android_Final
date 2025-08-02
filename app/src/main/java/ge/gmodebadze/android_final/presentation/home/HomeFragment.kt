@@ -115,7 +115,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupFloatingActionButton() {
-        // TODO
+        binding.bottomBar.fabUsers.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_userSearchFragment)
+        }
     }
 
     private fun getDummyChats(): List<String> {
