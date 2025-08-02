@@ -60,6 +60,9 @@
         <action
             android:id="@+id/action_homeFragment_to_userSearchFragment"
             app:destination="@id/userSearchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
 
     <fragment
