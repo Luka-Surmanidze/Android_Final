@@ -120,9 +120,17 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun getDummyChats(): List<String> {
-        return listOf("Alice", "Bob", "Charlie", "Diana", "Eve", "Alice", "Bob", "Charlie", "Diana", "Eve", "Alice", "Bob", "Charlie", "Diana", "Eve", "Alice", "Bob", "Charlie", "Diana", "Eve", "Alice", "Bob", "Charlie", "Diana", "Eve")
+    private fun getDummyChats(): List<ChatItem> {
+        val now = System.currentTimeMillis()
+        return listOf(
+            ChatItem("Givi Modebadze", "Working on the homework", now - 3 * 60 * 1000),
+            ChatItem("Ana", "Check this out!", now - 2 * 60 * 60 * 1000),
+            ChatItem("Luka", "😂😂😂", now - 25 * 60 * 60 * 1000),
+            ChatItem("Nino", "Done with the task!", now - 10 * 60 * 1000),
+            ChatItem("Saba", "See you soon", now - 4 * 24 * 60 * 60 * 1000),
+        )
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
