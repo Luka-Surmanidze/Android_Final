@@ -19,4 +19,5 @@
 
     <string name="not_registered">Not registered?</string>
     <string name="search">Search</string>
+    <string name="type_here">Type here...</string>
 </resources>
