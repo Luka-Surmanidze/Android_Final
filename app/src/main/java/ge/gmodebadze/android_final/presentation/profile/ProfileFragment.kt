@@ -1,10 +1,12 @@
 package ge.gmodebadze.android_final.presentation.profile
 
 import ProfileViewModel
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +22,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: ProfileViewModel
+    private var currentProfileImageUrl: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,18 +74,19 @@ class ProfileFragment : Fragment() {
                     showToast("Please enter profession")
                 }
                 else -> {
-                    viewModel.updateProfile(nickname, profession)
+                    viewModel.updateProfile(nickname, profession, currentProfileImageUrl)
                 }
             }
         }
 
         binding.btnLogout.setOnClickListener {
             viewModel.logout()
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
 
         binding.ivProfileImage.setOnClickListener {
-            showToast("Image picker not implemented yet")
-            // TODO: Implement image picker
+//            showToast("Image picker not implemented yet")
+            showProfileImageUrlDialog()
         }
     }
 
@@ -112,6 +116,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
+
         viewModel.updateState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is ProfileViewModel.UpdateState.Success -> {
@@ -132,11 +137,50 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun showProfileImageUrlDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Profile Picture URL")
+
+        val input = EditText(requireContext())
+        input.hint = "Enter image URL"
+        input.setText(currentProfileImageUrl)
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { _, _ ->
+            val imageUrl = input.text.toString().trim()
+            currentProfileImageUrl = imageUrl
+            loadProfileImage(imageUrl)
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.setNeutralButton("Remove") { _, _ ->
+            currentProfileImageUrl = ""
+            loadProfileImage("")
+        }
+
+        builder.show()
+    }
+
+    private fun loadProfileImage(imageUrl: String) {
+        Glide.with(requireContext())
+            .load(imageUrl.ifEmpty { null })
+            .placeholder(R.drawable.avatar_image_placeholder)
+            .error(R.drawable.avatar_image_placeholder)
+            .circleCrop()
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(binding.ivProfileImage)
+    }
+
     private fun setLoadingState(isLoading: Boolean) {
         binding.btnUpdateProfile.isEnabled = !isLoading
         binding.etNickname.isEnabled = !isLoading
         binding.etProfession.isEnabled = !isLoading
         binding.btnLogout.isEnabled = !isLoading
+
+        binding.ivProfileImage.isEnabled = !isLoading
 
         binding.btnUpdateProfile.text = if (isLoading) "Updating..." else "Update Profile"
 
@@ -147,15 +191,9 @@ class ProfileFragment : Fragment() {
         binding.apply {
             etNickname.setText(user.nickname)
             etProfession.setText(user.profession)
+            currentProfileImageUrl = user.profileImageUrl
 
-            // Load profile image with Glide
-            Glide.with(requireContext())
-                .load(user.profileImageUrl.ifEmpty { null })
-                .placeholder(R.drawable.avatar_image_placeholder)
-                .error(R.drawable.avatar_image_placeholder)
-                .circleCrop()
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(ivProfileImage)
+            loadProfileImage(user.profileImageUrl)
         }
     }
 
