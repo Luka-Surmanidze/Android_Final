@@ -12,7 +12,6 @@ import ge.gmodebadze.android_final.databinding.ItemConversationBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class ChatAdapter(
     private val onChatClick: (ChatItem) -> Unit
 ) : ListAdapter<ChatItem, ChatAdapter.ChatViewHolder>(DiffCallback) {
@@ -29,12 +28,14 @@ class ChatAdapter(
 
     inner class ChatViewHolder(private val binding: ItemConversationBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         @SuppressLint("SetTextI18n")
         fun bind(item: ChatItem) {
             item.userPhotoUrl?.let { url ->
                 Glide.with(binding.imageProfile.context)
                     .load(url)
                     .placeholder(R.drawable.avatar_image_placeholder)
+                    .error(R.drawable.avatar_image_placeholder)
                     .circleCrop()
                     .into(binding.imageProfile)
             } ?: run {
@@ -42,10 +43,33 @@ class ChatAdapter(
             }
 
             binding.textUsername.text = item.userName
-            binding.textLastMessage.text = item.lastMessage
-            binding.textTimestamp.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(item.timestamp))
+
+            binding.textLastMessage.text = if (item.lastMessage.isEmpty()) {
+                "No messages yet"
+            } else {
+                item.lastMessage
+            }
+
+            binding.textTimestamp.text = formatTimestamp(item.timestamp)
 
             binding.root.setOnClickListener { onChatClick(item) }
+        }
+
+        private fun formatTimestamp(timestamp: Long): String {
+            val now = System.currentTimeMillis()
+            val diff = now - timestamp
+
+            return when {
+                diff < 60_000 -> "Now" // Less than 1 minute
+                diff < 3_600_000 -> "${diff / 60_000}m"
+                diff < 86_400_000 -> "${diff / 3_600_000}h"
+                diff < 604_800_000 -> {
+                    SimpleDateFormat("EEE", Locale.getDefault()).format(Date(timestamp))
+                }
+                else -> {
+                    SimpleDateFormat("dd MMM", Locale.getDefault()).format(Date(timestamp))
+                }
+            }
         }
     }
 
@@ -62,7 +86,6 @@ class ChatAdapter(
         holder.bind(getItem(position))
     }
 }
-
 
 data class ChatItem(
     val chatId: String,
