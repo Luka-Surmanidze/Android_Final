@@ -66,8 +66,12 @@
         android:id="@+id/userSearchFragment"
         android:name="ge.gmodebadze.android_final.presentation.user_search.UserSearchFragment"
         android:label="Search Users"
-        tools:layout="@layout/fragment_user_search"
-        />
+        tools:layout="@layout/fragment_user_search">
+
+        <action
+            android:id="@+id/action_userSearchFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/chatFragment"
