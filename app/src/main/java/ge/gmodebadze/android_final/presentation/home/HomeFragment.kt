@@ -60,10 +60,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.topBar.searchButton.setOnClickListener {
-            showSearchLayout()
-        }
-
         binding.topBar.backFromSearchButton.setOnClickListener {
             hideSearchLayout()
         }
@@ -100,8 +96,6 @@ class HomeFragment : Fragment() {
         isSearchVisible = true
 
         binding.topBar.defaultSearchLayout.visibility = View.GONE
-        binding.topBar.titleText.visibility = View.GONE
-        binding.topBar.searchButton.visibility = View.GONE
 
         binding.topBar.searchLayout.visibility = View.VISIBLE
 
@@ -118,8 +112,6 @@ class HomeFragment : Fragment() {
         hideKeyboard()
 
         binding.topBar.defaultSearchLayout.visibility = View.VISIBLE
-        binding.topBar.titleText.visibility = View.VISIBLE
-        binding.topBar.searchButton.visibility = View.VISIBLE
 
         binding.topBar.searchLayout.visibility = View.GONE
     }
