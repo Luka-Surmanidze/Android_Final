@@ -30,4 +30,6 @@
     <dimen name="bottom_bar_height">100dp</dimen>
 
     <dimen name="icon_size">30dp</dimen>
+
+    <dimen name="home_image_size">60dp</dimen>
 </resources>
